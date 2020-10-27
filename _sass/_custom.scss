@@ -1,0 +1,18 @@
+.posts li {
+  list-style: none;
+  margin-bottom: 1em;
+}
+
+.posts {
+  padding-left: 0;
+}
+
+.til li {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.excerpt {
+  font-size: $root-font-size;
+  color: $gray-4;
+}

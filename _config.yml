@@ -1,0 +1,30 @@
+title:               Alex Mercea
+tagline:             "Ruby developer based in Melbourne"
+url:                 https://lxmrc.github.io
+date_format: "%e %B %Y"
+
+excerpt_separator:   <!--more-->
+twitter_username:   "alex_mercea"
+
+include: ['_pages']
+
+pages_list:
+  about: '/about'
+  github: 'https://github.com/lxmrc'
+  til: '/til'
+
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+author:
+  name:              Alex Mercea
+  url:               https://twitter.com/alex_mercea
+  email:             alex_mercea@protonmail.com
+
+plugins:
+  - jekyll-feed
+
+markdown: kramdown
+kramdown:
+  input: GFM

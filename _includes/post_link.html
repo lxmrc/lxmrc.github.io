@@ -1,0 +1,9 @@
+<a class="post" href="{{ post.url }}">{{ post.title }}</a>
+<time class="archive-date">{{ post.date | date: site.date_format }}</time>
+<p class="excerpt">
+  {% if post.description %}
+    {{ post.description }}
+  {% elsif post.excerpt %}
+    {{ post.excerpt | strip_html | strip | truncatewords: 10 }}
+  {% endif %}
+</p>

@@ -1,0 +1,12 @@
+code {
+  padding: .25em .5em;
+  font-size: 85%;
+  color: #bf616a;
+  border-radius: 3px;
+}
+
+pre > code {
+  display: block;
+  padding: 1rem 1.5rem;
+  overflow-x: scroll;
+}
