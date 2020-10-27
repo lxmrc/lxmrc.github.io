@@ -2,6 +2,7 @@ title:               Alex Mercea
 tagline:             "Ruby developer based in Melbourne"
 url:                 https://lxmrc.github.io
 date_format: "%e %B %Y"
+permalinks: pretty
 
 excerpt_separator:   <!--more-->
 twitter_username:   "alex_mercea"
@@ -9,9 +10,9 @@ twitter_username:   "alex_mercea"
 include: ['_pages']
 
 pages_list:
-  about: '/about'
+  about: '/about.html'
   github: 'https://github.com/lxmrc'
-  til: '/til'
+  til: '/til.html'
 
 sass:
   sass_dir:          _sass
