@@ -1,6 +1,5 @@
 title:               "lxmrc"
-tagline:             "Ruby developer based in Melbourne"
-url:                 https://lxmrc.github.io
+url:                 https://lxmrc.com
 date_format: "%e %B %Y"
 permalinks: pretty
 
@@ -12,7 +11,6 @@ include: ['_pages']
 pages_list:
   about: '/about.html'
   github: 'https://github.com/lxmrc'
-  til: '/til.html'
 
 sass:
   sass_dir:          _sass
