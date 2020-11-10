@@ -5,54 +5,25 @@ date: 2020-10-28 20:50 +1100
 description: Automating Jekyll deployments with git hooks.
 ---
 
-Yesterday I decided to move this site from [GitHub Pages](https://pages.github.com/) to my own server. In particular I thought it would be cool to figure out how to replicate the automated deployment functionality of GitHub Pages and have the site automatically build and deploy every time I pushed to a remote git repo. It was surprisingly easy, here's how I did it:
+Yesterday I decided to move this site from [GitHub Pages](https://pages.github.com/) to my own server. In particular I thought it would be cool to figure out how to replicate the automated deployment functionality of GitHub Pages and have the site automatically build and deploy every time I pushed to a remote git repo. Here's how I did it.
 
-After setting up a server running Ubuntu 20.04 I had to install the dependencies. To install Ruby via rbenv I followed [this guide from Linuxize](https://linuxize.com/post/how-to-install-ruby-on-ubuntu-20-04/):
-
->The ruby-build script installs Ruby from the source. To be able to build Ruby, install the required libraries and compilers:
->
->```shell
->$ sudo apt update
->```
->
->```shell
->$ sudo apt install git curl autoconf bison build-essential \
->    libssl-dev libyaml-dev libreadline6-dev zlib1g-dev \
->    libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
->```
->
->The simplest way to install the rbenv tool is to use the installation shell script. Run the following curl or to download and execute the script:
->
->curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-ins
-
->To start using rbenv, you need to add `$HOME/.rbenv/bin` to your `PATH`.
->
->```shell
->    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
->    echo 'eval "$(rbenv init -)"' >> ~/.bashrc
->    source ~/.bashrc
->```
-
-Then I installed Ruby 2.7.2 and made it the global Ruby version:
-
-```shell
-$ rbenv install 2.7.2
-$ rbenv global 2.7.2
-```
-
-Next I installed NGinx following [this guide from DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04):
-
-<strong style="background: yellow;">TODO: Rest of the article.</strong>
+These steps assume you already have a server running and serving your Jekyll site with Nginx.
 
 ---
 
-Create a new remote:
+Add a new remote on your local machine pointing to your Jekyll site on the remote server, e.g.:
 
 ```shell
-git remote add linode alex@lxmrc.com:/home/alex/lxmrc.com
+git remote add lxmrc alex@lxmrc.com:/home/alex/lxmrc.com
 ```
 
-Create a post-receive git hook `/home/alex/lxmrc.com/.git/hooks/post-receive`:
+Create a [post-receive git hook](https://githooks.com/): 
+
+>Git hooks are scripts that Git executes before or after events such as: commit, push, and receive. Git hooks are a built-in feature - no need to download anything. Git hooks are run locally.
+
+Git hooks live in the `.git/hooks` directory in your repo. There will already be a number of examples in there, you can either delete them or leave them be. The files are named after different events git recognizes; the script inside the file will execute whenever that particular event occurs. If you're like me you might assume the event we're looking for is `post-commit` but in actual fact it's `post-receive`. Don't ask me why.
+
+We want to create a file called `post-receive` in the `.git/hooks/` directory on the remote machine:
 
 ```bash
 #!/bin/bash
@@ -61,14 +32,22 @@ TMP_GIT_CLONE=/tmp/lxmrc.com
 PUBLIC_WWW=/var/www/lxmrc.com/html
 
 git clone --single-branch --branch master $GIT_REPO $TMP_GIT_CLONE
-/home/alex/.rbenv/shims/jekyll build --source $TMP_GIT_CLONE --destination $PUBLIC_WWW
+jekyll build --source $TMP_GIT_CLONE --destination $PUBLIC_WWW
 rm -rf $TMP_GIT_CLONE
 ```
 
-Switch to a dummy branch:
+This is a simple bash script that clones your repo to a temporary folder, runs `jekyll build` on it and builds the site in the directory that Nginx is serving from.
+
+You will also need to checkout a different branch because git won't let you do this while you're checked in to master (again, don't ask me why).
 
 ```shell
-$ git checkout -b dummy
+git checkout -b dummy
 ```
 
-Push and behold the magic.
+Make some changes on your local machine, commit them and then push:
+
+```shell
+git push lxmrc
+```
+
+And behold the magic.
