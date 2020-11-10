@@ -1,11 +1,11 @@
-title:               Alex Mercea
+title:               "lxmrc"
 tagline:             "Ruby developer based in Melbourne"
 url:                 https://lxmrc.github.io
 date_format: "%e %B %Y"
 permalinks: pretty
 
 excerpt_separator:   <!--more-->
-twitter_username:   "alex_mercea"
+twitter_username:   "lxmrc"
 
 include: ['_pages']
 
@@ -19,12 +19,9 @@ sass:
   style:            :compressed
 
 author:
-  name:              Alex Mercea
-  url:               https://twitter.com/alex_mercea
+  name:              Alex
+  url:               https://twitter.com/lxmrc
   email:             alex_mercea@protonmail.com
-
-plugins:
-  - jekyll-feed
 
 markdown: kramdown
 kramdown:
