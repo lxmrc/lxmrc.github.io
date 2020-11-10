@@ -9,9 +9,7 @@ Yesterday I decided to move this site from [GitHub Pages](https://pages.github.c
 
 These steps assume you already have a server running and serving your Jekyll site with Nginx.
 
----
-
-Add a new remote on your local machine pointing to your Jekyll site on the remote server, e.g.:
+In the repo on your local machine, add a remote pointing to the repo on the remote server, e.g.:
 
 ```shell
 git remote add lxmrc alex@lxmrc.com:/home/alex/lxmrc.com
@@ -21,9 +19,9 @@ Create a [post-receive git hook](https://githooks.com/):
 
 >Git hooks are scripts that Git executes before or after events such as: commit, push, and receive. Git hooks are a built-in feature - no need to download anything. Git hooks are run locally.
 
-Git hooks live in the `.git/hooks` directory in your repo. There will already be a number of examples in there, you can either delete them or leave them be. The files are named after different events git recognizes; the script inside the file will execute whenever that particular event occurs. If you're like me you might assume the event we're looking for is `post-commit` but in actual fact it's `post-receive`. Don't ask me why.
+Git hooks live in the `.git/hooks` directory in your repo. There will already be a number of examples in there, you can either delete them or leave them be. The files are named after different events git recognizes; the script inside the file will execute whenever that particular event occurs. (If you're like me you might assume the event we're looking for is `post-commit` but in actual fact it's `post-receive`. Don't ask me why.)
 
-We want to create a file called `post-receive` in the `.git/hooks/` directory on the remote machine:
+We want to create a file called `post-receive` in the `.git/hooks/` directory on the remote machine, e.g.:
 
 ```bash
 #!/bin/bash
@@ -38,16 +36,10 @@ rm -rf $TMP_GIT_CLONE
 
 This is a simple bash script that clones your repo to a temporary folder, runs `jekyll build` on it and builds the site in the directory that Nginx is serving from.
 
-You will also need to checkout a different branch because git won't let you do this while you're checked in to master (again, don't ask me why).
+You'll also need to checkout a different branch because git won't let you do this while you're checked in to master (again, don't ask me why).
 
 ```shell
 git checkout -b dummy
 ```
 
-Make some changes on your local machine, commit them and then push:
-
-```shell
-git push lxmrc
-```
-
-And behold the magic.
+Make some changes on your local machine, commit and push, and behold the magic.
