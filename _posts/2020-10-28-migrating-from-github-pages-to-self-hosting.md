@@ -252,7 +252,7 @@ Make some changes on your local machine, commit and push:
 git push jekyll
 ```
 
-And your site should be updated instantly.
+And your site should update instantly.
 
 ## Next steps
 
