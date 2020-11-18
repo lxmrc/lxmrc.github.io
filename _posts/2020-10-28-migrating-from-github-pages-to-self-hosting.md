@@ -146,7 +146,7 @@ ruby 2.7.0p0 (2019-12-25 revision 647ee6f091) [x86_64-linux-gnu]
 
 ### Nginx
 
-To host a web site you need to have a web server running to serve it, which is exactly what Nginx is for:
+To host a web site you need to have a web server set up. We're going to use Nginx:
 
 ```shell
 sudo apt install -y nginx
@@ -195,7 +195,7 @@ You'll need to give yourself ownership of the `/var/www/html` directory to put s
 sudo chown alex:alex /var/www/html
 ```
 
-This is the directory where Nginx looks for a site by default.[^3] Build your Jekyll site inside the `/var/www/html` directory:
+This is the directory where Nginx looks for a site by default. Build your Jekyll site inside the `/var/www/html` directory:
 
 ```shell
 bundle exec jekyll build --destination /var/www/html
@@ -209,7 +209,7 @@ If everything went smoothly, when you enter the IP address of your server into t
 
 Now that you've got your site up and running you'll want it to update automatically the way GitHub Pages does, whenever you push changes from your local machine.
 
-Essentially we want to run `bundle exec jekyll build --destination /var/www/html` automatically on the VPS every time we `git push` to our remote.
+Essentially we want to run `bundle exec jekyll build --destination /var/www/html` automatically on the server every time we `git push` changes to it.
 
 In the repo on your local machine, add a git remote pointing to the version on the remote server, e.g.:
 
@@ -238,15 +238,19 @@ jekyll build --source $TMP_GIT_CLONE --destination $PUBLIC_WWW
 rm -rf $TMP_GIT_CLONE
 ```
 
-This is a simple bash script that clones your repo to a temporary folder, runs `jekyll build` on it and builds the site in the directory that Nginx is serving from.
+This is a simple bash script that clones your repo to a temporary folder, runs `jekyll build` on it to build the site in the directory that Nginx is serving from and then cleans up the temporary folder.
 
-You'll also need to checkout a different branch because git won't let you do this while you're checked in to master (again, don't ask me why).
+You'll also need to checkout a different branch because git won't let you do this while you're checked in to master. 
 
 ```shell
 git checkout -b dummy
 ```
 
 Make some changes on your local machine, commit and push, and behold the magic.
+
+```shell
+git push jekyll
+```
 
 ## Next steps
 
