@@ -70,7 +70,7 @@ Congrats, you're now logged in as root, but you should create a non-root user wi
 adduser alex
 ```
 
-We'll use this account instead of root for everything we do from now on.[^2] Give it a password but don't worry about the full name, room number, etc. 
+We'll use this account instead of root for everything we do from now on. Give it a password but don't worry about the full name, room number, etc. 
 
 Add your new user to the `sudo` group to give it administrative privileges:
 
