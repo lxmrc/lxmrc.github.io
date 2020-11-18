@@ -246,11 +246,13 @@ You'll also need to checkout a different branch because git won't let you do thi
 git checkout -b dummy
 ```
 
-Make some changes on your local machine, commit and push, and behold the magic.
+Make some changes on your local machine, commit and push:
 
 ```shell
 git push jekyll
 ```
+
+And your site should be updated instantly.
 
 ## Next steps
 
