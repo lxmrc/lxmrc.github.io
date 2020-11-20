@@ -229,7 +229,7 @@ TMP_GIT_CLONE=/tmp/jekyll
 PUBLIC_WWW=/var/www/html
 
 git clone --single-branch --branch master $GIT_REPO $TMP_GIT_CLONE
-jekyll build --source $TMP_GIT_CLONE --destination $PUBLIC_WWW
+bundle exec jekyll build --source $TMP_GIT_CLONE --destination $PUBLIC_WWW
 rm -rf $TMP_GIT_CLONE
 ```
 
