@@ -18,7 +18,7 @@ Yesterday I decided to move this site from GitHub Pages to my own VPS. In partic
 
 ## Setting up the server
 
-If this isn't your first rodeo then by all means skip to the next section, otherwise follow the steps below to set up your very own server in the cloud.
+If this isn't your first rodeo then by all means skip to the next section, otherwise follow the steps below to set up your server.
 
 A lot of people recommend DigitalOcean but I've gone with Linode because they have a data centre in Australia and DigitalOcean don't. [Here's a link for $100 free credit when you sign up](https://www.linode.com/lp/brand-free-credit/). [^1]
 
@@ -96,8 +96,6 @@ We're going to install Ruby with [`rbenv`](https://github.com/rbenv/rbenv). Firs
 ```shell
 sudo apt update
 ```
-Managing packages requires root privileges, which is why these commands must be prepended with `sudo` and why you'll be prompted for your password.
-
 Next, install the packages we'll need to run `rbenv` and install Ruby:
 
 ```shell
@@ -116,9 +114,6 @@ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
 exec $SHELL
 ```
-
-There are a few things going on here but explaing them in detail is outside of the scope of this article. Rest assured however, these lines do in fact install `rbenv`.
-
 Now we can install Ruby with `rbenv`:
 
 ```shell
@@ -146,7 +141,7 @@ ruby 2.7.0p0 (2019-12-25 revision 647ee6f091) [x86_64-linux-gnu]
 
 ### Nginx
 
-To host a web site you need to have a web server set up. We're going to use Nginx:
+To host a website you need a web server. We're going to use Nginx:
 
 ```shell
 sudo apt install -y nginx
