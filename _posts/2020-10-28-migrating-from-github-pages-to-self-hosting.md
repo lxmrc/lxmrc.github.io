@@ -229,11 +229,11 @@ TMP_GIT_CLONE=/tmp/jekyll
 PUBLIC_WWW=/var/www/html
 
 git clone --single-branch --branch master $GIT_REPO $TMP_GIT_CLONE
-bundle exec jekyll build --source $TMP_GIT_CLONE --destination $PUBLIC_WWW
+/home/alex/.rbenv/shims/jekyll build --source $TMP_GIT_CLONE --destination $PUBLIC_WWW
 rm -rf $TMP_GIT_CLONE
 ```
 
-This is a simple bash script that clones your repo to a temporary folder, runs `jekyll build` on it to build the site in the directory that Nginx is serving from and then cleans up the temporary folder.
+This is a simple bash script that clones your repo to a temporary folder, runs `jekyll build`[^2] on it to build the site in the directory that Nginx is serving from and then cleans up the temporary folder.
 
 Make the script executable:
 
@@ -263,3 +263,4 @@ You should probably also take further steps to secure your server [by disabling 
 
 ---
 [^1]: I don't get anything if you use this, in case you care about that.
+[^2]: For some reason it's necessary to use the full path to the Jekyll executable in the git hook, otherwise it won't work.
