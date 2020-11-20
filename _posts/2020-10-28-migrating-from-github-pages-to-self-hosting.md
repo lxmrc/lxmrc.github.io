@@ -235,6 +235,12 @@ rm -rf $TMP_GIT_CLONE
 
 This is a simple bash script that clones your repo to a temporary folder, runs `jekyll build` on it to build the site in the directory that Nginx is serving from and then cleans up the temporary folder.
 
+Make the script executable:
+
+```shell
+chmod +x .git/hooks/post-receive
+```
+
 You'll also need to checkout a different branch because git won't let you do this while you're checked in to master. 
 
 ```shell
