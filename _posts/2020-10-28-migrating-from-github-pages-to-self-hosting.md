@@ -220,7 +220,7 @@ Git hooks live in the `.git/hooks` directory in your repo. There will already be
 
 The files are named after different events git recognizes; the script inside the file will execute whenever that particular event occurs. (If you're like me you might have assumed the event we're looking for is `post-commit` but no, that's something else. The event we want is `post-receive`.)
 
-We want to create a file called `post-receive` in the `.git/hooks/` directory on the remote machine containing the following bash script:
+We want to create a file called `post-receive` in the `.git/hooks` directory on the remote machine containing the following bash script:
 
 ```bash
 #!/bin/bash
@@ -241,10 +241,10 @@ Make the script executable:
 chmod +x .git/hooks/post-receive
 ```
 
-You'll also need to checkout a different branch because git won't let you do this while you're checked in to master. 
+You'll also need to checkout a different branch because git won't let you do this while you're checked in to master (also make sure you're not in the `.git` directory):
 
 ```shell
-git checkout -b dummy
+git checkout -b tmp
 ```
 
 Make some changes on your local machine, commit and push:
@@ -257,10 +257,10 @@ And your site should update instantly.
 
 ## Next steps
 
-This would all be much more impressive if you didn't have to use the IP address to visit your site. Why not [buy a domain](https://www.namecheap.com/) and [set up DNS](https://www.namecheap.com/support/knowledgebase/article.aspx/9837/46/how-to-connect-a-domain-to-a-server-or-hosting#viaip)?
+This would all be much more impressive if you didn't have to use the IP address to visit your site. Why not [buy a domain](https://www.namecheap.com/) and [set up your DNS records](https://www.namecheap.com/support/knowledgebase/article.aspx/9837/46/how-to-connect-a-domain-to-a-server-or-hosting#viaip)?
 
 You should probably also take further steps to secure your server [by disabling root login, using SSH keys to log in instead of a password](https://youtu.be/5JvU9wcZSbA&t=296) and [setting up a firewall](https://www.youtube.com/watch?v=Pn_1rb4oF5I).
 
 ---
-[^1]: I don't get anything if you use this, in case you care about that.
-[^2]: For some reason it's necessary to use the full path to the Jekyll executable in the git hook, otherwise it won't work.
+[^1]: I don't get anything if you use this link.
+[^2]: I'm not sure why but this won't work unless you use the full path to the Jekyll executable.
