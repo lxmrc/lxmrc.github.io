@@ -2,12 +2,12 @@
 layout: post
 title: Migrating from GitHub Pages to self-hosting
 date: 2020-10-28 20:50 +1100
-description: Automating Jekyll deployments with git hooks.
+description: Automating Jekyll deployments with Git hooks.
 ---
 
-Yesterday I decided to move this site from GitHub Pages to my own VPS. In particular I thought it would be cool to figure out how to replicate the automated deployment functionality of GitHub Pages and have the site automatically build and deploy every time I pushed to the remote git repo. Here's how I did it.
+Yesterday I decided to move this site from GitHub Pages to my own VPS. In particular I thought it would be cool to figure out how to replicate the automated deployment functionality of GitHub Pages and have the site automatically build and deploy every time I pushed to the remote Git repo. Here's how I did it.
 
-(**Note**: This guide assumes a basic familiarity with the Unix command line, git, etc. It also assumes you have [a Jekyll site in a GitHub repository](https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/creating-a-github-pages-site-with-jekyll).)
+(**Note**: This guide assumes a basic familiarity with the Unix command line, Git, etc. It also assumes you have [a Jekyll site in a GitHub repository](https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/creating-a-github-pages-site-with-jekyll).)
 
 1. [Setting up the server](#setting-up-the-server) 
 1. [Installing dependencies](#installing-dependencies)
@@ -20,7 +20,7 @@ Yesterday I decided to move this site from GitHub Pages to my own VPS. In partic
 
 If this isn't your first rodeo then by all means skip to the next section, otherwise follow the steps below to set up your server.
 
-A lot of people recommend DigitalOcean but I've gone with Linode because they have a data centre in Australia and DigitalOcean don't. [Here's a link for $100 free credit when you sign up](https://www.linode.com/lp/brand-free-credit/). [^1]
+A lot of people recommend DigitalOcean but I've gone with Linode because they have a data centre in Australia. [Here's a link for $100 free credit when you sign up](https://www.linode.com/lp/brand-free-credit/). [^1]
 
 
 ### Creating a server
@@ -37,21 +37,17 @@ Choose the region closest to you:
 
 ![](/assets/linode3.png)
 
-Go with the Nanode 1GB Plan, you won't need anything more for serving a static site:
+The Nanode 1GB Plan will do for serving a static site:
 
 ![](/assets/linode4.png)
 
-Give it a descriptive label or just use the default one. 
-
-Create a root password and don't forget it, you'll need it to log in. 
-
-Click create on the right hand side and wait for your server to be created. Once the icon says "Running" you're ready to log in:
+Give it a descriptive label or just use the default one, create a root password, click create on the right hand side and wait for your server to be created. Once the icon says "Running" you're ready to log in:
 
 ![](/assets/linode5.png)
 
 ### Logging in and creating a user
 
-To log in to the server you'll need to copy its IP address:
+To log in to the server you'll need its IP address:
 
 ![](/assets/linode6.png)
 
@@ -87,7 +83,7 @@ ssh alex@123.456.789
 
 ## Installing dependencies
 
-Next we need to install all the things we need to run Jekyll and host a website.
+Next we need to install all the things needed to run Jekyll and host a website.
 
 ### Ruby
 
@@ -147,7 +143,7 @@ To host a website you need a web server. We're going to use Nginx:
 sudo apt install -y nginx
 ```
 
-Then verify that it's running:
+Verify that it's running:
 
 ```shell
 sudo systemctl status nginx
@@ -166,7 +162,7 @@ Congrats, you have a publicly facing web server accessible by anyone on the inte
 
 ## Serving the site via Nginx
 
-Clone down a copy of your Jekyll site from the GitHub repository:
+Clone a copy of your Jekyll site from the GitHub repository onto your server:
 
 ```shell
 git clone https://github.com/your-username/your-username.github.io.git
@@ -206,19 +202,19 @@ Now that you've got your site up and running you'll want it to update automatica
 
 Essentially we want to run `bundle exec jekyll build --destination /var/www/html` automatically on the server every time we `git push` changes to it.
 
-In the repo on your local machine, add a git remote pointing to the version on the remote server, e.g.:
+In the repo on your local machine, add a Git remote pointing to the version on the remote server, e.g.:
 
 ```shell
 git remote add jekyll alex@123.456.789:/path/to/jekyll/site
 ```
 
-We can use [git hooks](https://githooks.com/) to run our Jekyll build every time we push changes:
+We can use [Git hooks](https://githooks.com/) to run our Jekyll build every time we push changes:
 
 >Git hooks are scripts that Git executes before or after events such as: commit, push, and receive. Git hooks are a built-in feature - no need to download anything. Git hooks are run locally.
 
 Git hooks live in the `.git/hooks` directory in your repo. There will already be a number of examples in there, you can either delete them or leave them be. 
 
-The files are named after different events git recognizes; the script inside the file will execute whenever that particular event occurs. (If you're like me you might have assumed the event we're looking for is `post-commit` but no, that's something else. The event we want is `post-receive`.)
+The files are named after different events Git recognizes; the script inside the file will execute whenever that particular event occurs. If you're like me you might have assumed the event we're looking for is `post-commit` but you'd be wrong. The event we want is `post-receive`.
 
 We want to create a file called `post-receive` in the `.git/hooks` directory on the remote machine containing the following bash script:
 
@@ -233,7 +229,7 @@ git clone --single-branch --branch master $GIT_REPO $TMP_GIT_CLONE
 rm -rf $TMP_GIT_CLONE
 ```
 
-This is a simple bash script that clones your repo to a temporary folder, runs `jekyll build`[^2] on it to build the site in the directory that Nginx is serving from and then cleans up the temporary folder.
+This is a simple Bash script that clones your repo to a temporary folder, runs `jekyll build`[^2] on it to build the site in the directory that Nginx is serving from and then cleans up the temporary folder.
 
 Make the script executable:
 
@@ -241,7 +237,7 @@ Make the script executable:
 chmod +x .git/hooks/post-receive
 ```
 
-You'll also need to checkout a different branch because git won't let you do this while you're checked in to master (also make sure you're not in the `.git` directory):
+You'll also need to checkout a different branch because Git won't let you do this while you're checked in to master (also make sure you're not still in the `.git` directory):
 
 ```shell
 git checkout -b tmp
@@ -253,7 +249,7 @@ Make some changes on your local machine, commit and push:
 git push jekyll
 ```
 
-And your site should update instantly.
+And your site should update instantly. Pretty neat.
 
 ## Next steps
 

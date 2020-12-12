@@ -4,10 +4,19 @@ title: About
 permalink: /about
 ---
 
-I'm a self-taught developer living in Melbourne, Australia.
+## About me
+
+I’m Alex. I’m a Ruby developer based in Melbourne, Australia. This is where I blog about computers. 
 
 I'm interested in :
   - Ruby, either on Rails or regular
   - Back-end development in particular
-  - Linux, Docker, CI/CD, anything devops or sysadmin
+  - Linux, Docker, CI/CD and devops in general
   - Why learning is hard and how to do it better
+
+---
+
+[GitHub](https://github.com/lxmrc) &middot;
+[Twitter](https://twitter.com/lxmrc) &middot;
+[Contact](mailto:alex@lxmrc.com) 
+{: style="text-align: center;"}
