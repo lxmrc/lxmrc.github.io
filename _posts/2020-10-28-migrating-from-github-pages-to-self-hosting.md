@@ -20,7 +20,7 @@ Yesterday I decided to move this site from GitHub Pages to my own VPS. In partic
 
 If this isn't your first rodeo then by all means skip to the next section, otherwise follow the steps below to set up your server.
 
-A lot of people recommend DigitalOcean but I've gone with Linode because they have a data centre in Australia. [Here's a link for $100 free credit when you sign up](https://www.linode.com/lp/brand-free-credit/). [^1]
+A lot of people recommend DigitalOcean but I've gone with Linode because they have a data centre in Australia. [Here's a link for $100 free credit when you sign up](https://www.linode.com/lp/brand-free-credit/).
 
 
 ### Creating a server
@@ -47,7 +47,7 @@ Give it a descriptive label or just use the default one, create a root password,
 
 ### Logging in and creating a user
 
-To log in to the server you'll need its IP address:
+To log in to the server you'll need its IP address.
 
 ![](/assets/linode6.png)
 
@@ -60,13 +60,13 @@ Type `yes` when it asks if you're sure you want to continue, then enter the pass
 
 ![](/assets/ubuntu1.png)
 
-Congrats, you're now logged in as root, but you should create a non-root user with administrative privileges, e.g.:
+Congrats, you're now logged in as `root`, but you should create a non-root user with administrative privileges and use this account instead of `root` to do everything from now on. :
 
 ```shell
 adduser alex
 ```
 
-We'll use this account instead of root for everything we do from now on. Give it a password but don't worry about the full name, room number, etc. 
+Give it a password but don't worry about the full name, room number, etc. 
 
 Add your new user to the `sudo` group to give it administrative privileges:
 
@@ -87,20 +87,16 @@ Next we need to install all the things needed to run Jekyll and host a website.
 
 ### Ruby
 
-We're going to install Ruby with [`rbenv`](https://github.com/rbenv/rbenv). First update your package list:
+We're going to install Ruby with [`rbenv`](https://github.com/rbenv/rbenv), but we need to install a number of packages before we can do that:
 
 ```shell
 sudo apt update
-```
-Next, install the packages we'll need to run `rbenv` and install Ruby:
-
-```shell
 sudo apt install git curl autoconf bison build-essential \
     libssl-dev libyaml-dev libreadline6-dev zlib1g-dev \
     libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
 ```
 
-Finally install `rbenv`:
+*Now* we can install `rbenv`:
 
 ```shell
 git clone https://github.com/rbenv/rbenv.git ~/.rbenv
@@ -110,15 +106,17 @@ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
 exec $SHELL
 ```
-Now we can install Ruby with `rbenv`:
+There are a few things going on here but explaining them in detail is outside the scope of this article. [Here's a good article that explains some of what's going on.](https://linuxhint.com/path_in_bash/)
+
+We should now be able to install Ruby with `rbenv`:
 
 ```shell
 rbenv install 2.7.2
 ```
 
-This might take a while. In fact, the server has a time limit for how long you can be logged in without doing anything and it might kick you out before Ruby's done installing, but the installation will continue regardless and you can simply log back in.
+This might take a while. In fact, the server will probably have a time limit for how long you can be logged in without doing anything and it might kick you out before Ruby's done installing, but the installation will continue regardless and you can simply log back in.
 
-Once it's done, set the global Ruby version to 2.7.2:
+Once it's done, set the global Ruby version:
 
 ```shell
 rbenv global 2.7.2
@@ -129,15 +127,17 @@ Then verify that Ruby installed correctly:
 ruby -v
 ```
 
-You should see something like this:
+And if you see something like this:
 
 ```shell
 ruby 2.7.0p0 (2019-12-25 revision 647ee6f091) [x86_64-linux-gnu]
 ```
 
+...then you've successfully installed Ruby.
+
 ### Nginx
 
-To host a website you need a web server. We're going to use Nginx:
+To host a website you'll need a web server. We're going to use Nginx:
 
 ```shell
 sudo apt install -y nginx
@@ -186,26 +186,26 @@ You'll need to give yourself ownership of the `/var/www/html` directory to put s
 sudo chown alex:alex /var/www/html
 ```
 
-This is the directory where Nginx looks for a site by default. Build your Jekyll site inside the `/var/www/html` directory:
+This is the directory where Nginx looks for a site by default. Build your Jekyll site inside this directory:
 
 ```shell
 bundle exec jekyll build --destination /var/www/html
 ```
 
-If everything went smoothly, when you enter the IP address of your server into the browser, instead of the default Nginx page you should now see your Jekyll site.
+If everything went smoothly, when you enter the IP address of your server into the browser, instead of the default Nginx page you should hopefully see your Jekyll site!
 
 ---
 
 ## Automating deployment
 
-Now that you've got your site up and running you'll want it to update automatically the way GitHub Pages does, whenever you push changes from your local machine.
+Now that you've got your site up and running you can set it up to update automatically whenever you push changes from your local machine, the way GitHub Pages does.
 
 Essentially we want to run `bundle exec jekyll build --destination /var/www/html` automatically on the server every time we `git push` changes to it.
 
 In the repo on your local machine, add a Git remote pointing to the version on the remote server, e.g.:
 
 ```shell
-git remote add jekyll alex@123.456.789:/path/to/jekyll/site
+git remote add jekyll alex@123.456.789:/home/alex/blog
 ```
 
 We can use [Git hooks](https://githooks.com/) to run our Jekyll build every time we push changes:
@@ -214,9 +214,9 @@ We can use [Git hooks](https://githooks.com/) to run our Jekyll build every time
 
 Git hooks live in the `.git/hooks` directory in your repo. There will already be a number of examples in there, you can either delete them or leave them be. 
 
-The files are named after different events Git recognizes; the script inside the file will execute whenever that particular event occurs. If you're like me you might have assumed the event we're looking for is `post-commit` but you'd be wrong. The event we want is `post-receive`.
+The files are named after different events Git recognizes; the script inside the file will execute whenever that particular event occurs. If you're like me you might have assumed the event we're looking for is `post-commit` but it turns out it's actually `post-receive`.
 
-We want to create a file called `post-receive` in the `.git/hooks` directory on the remote machine containing the following bash script:
+We want to create a file called `post-receive` in the `.git/hooks` directory on the remote machine containing the following script:
 
 ```bash
 #!/bin/bash
@@ -229,15 +229,15 @@ git clone --single-branch --branch master $GIT_REPO $TMP_GIT_CLONE
 rm -rf $TMP_GIT_CLONE
 ```
 
-This is a simple Bash script that clones your repo to a temporary folder, runs `jekyll build`[^2] on it to build the site in the directory that Nginx is serving from and then cleans up the temporary folder.
+This is a simple Bash script that clones your repo to a temporary folder, runs `jekyll build`[^1] on it to build the site in the directory that Nginx is serving from and then cleans up the temporary folder.
 
-Make the script executable:
+For it to run you'll need to make the script executable:
 
 ```shell
 chmod +x .git/hooks/post-receive
 ```
 
-You'll also need to checkout a different branch because Git won't let you do this while you're checked in to master (also make sure you're not still in the `.git` directory):
+This won't work if you're checked in to master so you'll also need to checkout a different branch:
 
 ```shell
 git checkout -b tmp
@@ -249,7 +249,7 @@ Make some changes on your local machine, commit and push:
 git push jekyll
 ```
 
-And your site should update instantly. Pretty neat.
+And your site should update instantly! Pretty cool I reckon.
 
 ## Next steps
 
@@ -258,5 +258,4 @@ This would all be much more impressive if you didn't have to use the IP address 
 You should probably also take further steps to secure your server [by disabling root login, using SSH keys to log in instead of a password](https://youtu.be/5JvU9wcZSbA&t=296) and [setting up a firewall](https://www.youtube.com/watch?v=Pn_1rb4oF5I).
 
 ---
-[^1]: I don't get anything if you use this link.
-[^2]: I'm not sure why but this won't work unless you use the full path to the Jekyll executable.
+[^1]: I'm not sure why but this won't work unless you use the full path to the Jekyll executable.

@@ -53,13 +53,16 @@ Apart from those two things I was basically able to follow the steps without any
 
 ## Self-hosted object storage with MinIO
 
-Last year I signed up for the AWS free tier and then proceeded to do very little with it. By the time I reached the final chapter of Active Rails, which explains that applications should use something like Amazon S3 for storage in production, I'd already wasted all my free credit.
+Last year I signed up for the AWS free tier and then proceeded to do very little with it. By the time I reached the final chapter of Active Rails, which explains that applications should use something like Amazon S3 for storage in production, I'd already wasted all my free credit (and been billed for an EC2 instance I left on).
+
+<img src="/assets/aws.jpeg" width="75%" style="margin: 1em auto;"/>
+<div	 class="caption">via <a href="https://twitter.com/SimpsonsOps">Simpsons Against DevOps</a></div>
 
 At this point I was addicted to making everything more complicated than it needed to be, so I wondered, what was the category of thing that Amazon S3 falls into and could I host my own version of it? The answer is object storage and yes.
 
 [This video by Zach Gollwitzer explains what object storage is and what differentiates it from the more traditional types of storage.](https://www.youtube.com/watch?v=3r9RGJ0_Bls&t=1468s) It's good for storing unstructured data that will most likely be written to once but accessed many times, e.g.: images and video. S3 is Amazon's object storage service, but other cloud providers offer compatible services based on the S3 API, and it's also possible to host your own, which is what I did using [MinIO](https://min.io).
 
-It wasn't very hard: I followed [this guide by Kevin Stevenson](https://gist.github.com/kstevenson722/e7978a75aec25feaa6ad0965ec313e2d). Configuring Active Storage to work with my MinIO bucket was also pretty straightforward thanks to [this blog post by Kevin Jalbert](https://kevinjalbert.com/rails-activestorage-configuration-for-minio/). Everything is easy when someone else already wrote down how to do it.
+It was actually pretty simple, I used [this guide by Kevin Stevenson](https://gist.github.com/kstevenson722/e7978a75aec25feaa6ad0965ec313e2d) and was up and running within a few minutes. Configuring Active Storage to work with my MinIO bucket was also pretty straightforward thanks to [this post by Kevin Jalbert](https://kevinjalbert.com/rails-activestorage-configuration-for-minio/). It turns out everything is easy when someone else already wrote down how to do it.
 
 The Rails app was now fully functional, able to handle file uploads and store them on my imitation S3 bucket. The next thing I wanted to tackle was continuous integration.
 
@@ -74,14 +77,14 @@ I won't go over continuous integration and delivery (CI/CD) in detail here. [Her
 
 Essentially what I wanted was to automate the process of running the test suite and deploying to production after every commit. [GitHub Actions](https://github.com/features/actions) is an easy way to do this but as you might've gathered from reading this far, I prefer it when things are hard, so I decided to try running CI on my own server with GitLab.
 
-Setting up a GitLab instance is straightforward, [you can just install it as a package on Ubuntu.](https://about.gitlab.com/install/#ubuntu) This will create a self-hosted, self-managed instance of GitLab. [To run CI pipelines you need a GitLab Runner](https://docs.gitlab.com/runner/), which has to run on its own separate server. I went with Docker for my "executor", the thing the runner uses to run stuff; there are other options but I like Docker.
+Setting up a GitLab instance was pretty painless: [you can just install it as a package on Ubuntu.](https://about.gitlab.com/install/#ubuntu) This will create a self-hosted, self-managed instance of GitLab. [To run CI pipelines you need a GitLab Runner](https://docs.gitlab.com/runner/), which has to run on its own separate server. I went with Docker for my "executor", the thing the runner uses to run stuff; there are other options but I like Docker.
 
 <img src="/assets/containers.jpeg" width="75%" style="margin: 1em auto;"/>
 <div	 class="caption">via <a href="https://twitter.com/SimpsonsOps">Simpsons Against DevOps</a></div>
 
 Once Docker's installed you can [install GitLab Runner](https://docs.gitlab.com/runner/install/linux-repository.html#installing-the-runner) and [register it](https://docs.gitlab.com/runner/register/index.html), i.e. bind it to your GitLab instance so it can run your pipelines on it. 
 
-I don't have much else to say about this part, I just followed the documentation and pretty soon I was ready to integrate and deploy continuously.
+I really don't have much else to say about this part; I just followed GitLab's docs and pretty soon I was ready to start continuously integrating and deploying.
 
 ---
 
@@ -102,7 +105,7 @@ I don't have much else to say about this part, I just followed the documentation
 >
 >If *any* job in a stage fails, the next stage is not (usually) executed and the pipeline ends early.
 
-In my case I just wanted the test suite to run, and if all the tests were green, to deploy the new version of the app to production. That's two stages, one for testing and one for deployment.
+In my case I just wanted the test suite to run, and if all the tests were green, to deploy the new version of the app to production. That means two stages, one for testing and one for deployment.
 
 To get started with GitLab CI/CD you need a `.gitlab-ci.yml` file in the root of the repository. Here is what my first working version eventually looked like after a lot of troubleshooting:
 
@@ -129,15 +132,15 @@ test:
 ```
 
 The first line specifies the image to build the container from. The next part defines a job called `test` which will be part of a stage also named `test`. The job itself is essentially just a list of the commands you would need to run in your terminal to get the tests running after cloning the repo:
-1. Install dependencies
+1. Install the dependencies
 2. Create the database
 3. Run the tests
 
-The installing Node and Yarn part was adapted from the GoRails guide, and the headless Firefox part was necessary for the Capybara tests to work.
+The headless Firefox part was necessary for the Capybara tests to work.
 
 One thing I quickly discovered in the process is that running `bundle install` every time gets old fast, and Node, Yarn and headless Firefox also seem like things that should already be in there ready to go when the container starts running.
 
-Fortunately, GitLab provides per-repo container registries for uploading your own container images, so I decided to write my own Dockerfile to address this. [This post by Brian Morearty](http://ilikestuffblog.com/2014/01/06/how-to-skip-bundle-install-when-deploying-a-rails-app-to-docker/) helped me figure out how to cache gems inside the container image, and then I just copied the `apt-get` lines from my `.gitlab-ci.yml` into my Dockerfile:
+Fortunately, GitLab provides per-repo container registries for uploading your own container images, so I decided to write my own Dockerfile to address this. [This post by Brian Morearty](http://ilikestuffblog.com/2014/01/06/how-to-skip-bundle-install-when-deploying-a-rails-app-to-docker/) helped me figure out how to cache gems inside the container image; apart from that I was able to just copy the `apt-get` lines from my `.gitlab-ci.yml` into my Dockerfile:
 
 ```
 FROM ruby:2.7.1
@@ -153,7 +156,7 @@ RUN apt-get -y install firefox-esr
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
 RUN tar -xvzf geckodriver-v0.27.0-linux64.tar.gz -C /usr/bin
 
-# Run bundle install to install the Ruby dependencies.
+# Run bundle install.
 COPY Gemfile* ./
 RUN bundle install
 ```
@@ -173,14 +176,14 @@ test:
     - bundle exec rspec
 ```
 
-And reduced the build time from 8:21 to 1:50.
+And reduced the build time from 8:21 to 1:50. I now had automated tests running, the final step was automating the deployment. 
 
-I now had automated tests, the final step was automating the deployment. 
+To deploy manually I just run `bundle exec cap production deploy`, but deploying from inside the GitLab Runner container takes a little more than that. 
 
-To deploy manually I just run `bundle exec cap production deploy`, but deploying from inside the GitLab Runner container takes a little more than that. The production server doesn't let just anyone deploy to it so I needed to somehow get an SSH key into the container that Capistrano would be running in. [This blog post by Jamie Tanna helped me figure this out](https://www.jvt.me/posts/2017/01/25/gitlab-ci-capistrano/), but here are the steps summarized:
+The production server doesn't let just anyone deploy to it, it uses SSH for authentication. I needed to somehow get an SSH key into the container that Capistrano would be running in. [I used this blog post by Jamie Tanna to figure this out](https://www.jvt.me/posts/2017/01/25/gitlab-ci-capistrano/), but here are the steps summarized:
 
-1. You can make environment variables available in the container in the GitLab UI: [add the private key as an environment variable](https://docs.gitlab.com/ee/ci/variables/README.html#create-a-custom-variable-in-the-ui) and it'll become accessible from your `.gitlab-ci.yml`.
-2. [Add the public key as a 'deploy key'.](https://docs.gitlab.com/ee/user/project/deploy_keys/#project-deploy-keys)
+1. You can make environment variables available in the container from the GitLab UI: [add the private key as an environment variable called `$SSH_PRIVATE_KEY`](https://docs.gitlab.com/ee/ci/variables/README.html#create-a-custom-variable-in-the-ui) and it'll become accessible from your `.gitlab-ci.yml`.
+2. [Add the public key as a 'deploy key' from the GitLab UI.](https://docs.gitlab.com/ee/user/project/deploy_keys/#project-deploy-keys) This will allow Capistrano, running inside GitLab Runner, to read from the repo so it can then deploy.
 3. Use `ssh-agent` in the `.gitlab-ci.yml` to authenticate.
 
 Here's what that looks like:
@@ -200,7 +203,7 @@ That's it! Everything finally worked. This last part took the most time by far b
 
 ## Final thoughts
 
-Obviously I've skipped over a lot of troubleshooting and missteps and the hours spent on StackOverflow it took to get everything working. Overall this whole process took me around 12-16 hours over several days, and it was getting past two or three specific errors (which I've skipped over in writing this) that took up the bulk of that time.
+Obviously I've skipped over a lot of troubleshooting and missteps and the hours spent on StackOverflow it took to get everything working. Overall this whole process took me around 12-16 hours over several days, and it was getting past two or three specific errors that took up the bulk of that time.
 
 An important realisation I had is that this would have taken much longer, or I might not have been able to do it at all, if it weren't for other people's blog posts.
 
