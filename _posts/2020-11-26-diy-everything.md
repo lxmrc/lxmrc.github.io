@@ -209,6 +209,8 @@ An important realisation I had is that this would have taken much longer, or I m
 
 Next time I do something like this I think I'll also try writing some Ansible playbooks to automate everything while I'm at it.
 
+Since writing this post I've torn down the GitLab and MinIO servers (because servers cost money) but [the app is still available](https://ticketty.lxmrc.com), albeit without file upload functionality.
+
 Here are all the important links I used again in one spot if you want to do any of this yourself:
 
 1. [Deploy Ruby On Rails to Ubuntu 20.04 Focal Fossa](https://gorails.com/deploy/ubuntu/20.04)
