@@ -10,7 +10,7 @@ include: ['_pages']
 
 pages_list:
   about: '/about.html'
-  github: 'https://github.com/lxmrc'
+  links: '/links.html'
 
 sass:
   sass_dir:          _sass
@@ -19,8 +19,11 @@ sass:
 author:
   name:              Alex
   url:               https://twitter.com/lxmrc
-  email:             alex_mercea@protonmail.com
+  email:             alex@protonmail.com
 
 markdown: kramdown
 kramdown:
   input: GFM
+
+plugins:
+  - jekyll-feed
