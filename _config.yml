@@ -10,7 +10,6 @@ include: ['_pages']
 
 pages_list:
   about: '/about.html'
-  links: '/links.html'
 
 sass:
   sass_dir:          _sass
@@ -19,7 +18,7 @@ sass:
 author:
   name:              Alex
   url:               https://twitter.com/lxmrc
-  email:             alex@protonmail.com
+  email:             alex@lxmrc.com
 
 markdown: kramdown
 kramdown:
