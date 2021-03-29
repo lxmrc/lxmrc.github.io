@@ -1,8 +1,10 @@
 ---
 layout: post
 title: 'Exercism: Resistor Color Duo'
+date: 2020-09-22 13:56 +1000
 tag: exercism
 ---
+
 >[Part of a series of posts going through the Ruby exercises on](/tag/exercism) [exercism.io](https://exercism.io).
 
 ![Resistance is Futile](/assets/img/borg.jpg)

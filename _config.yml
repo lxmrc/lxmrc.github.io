@@ -11,13 +11,16 @@ include: ['_pages']
 pages_list:
   about: '/about.html'
 
+# collections:
+#   til:
+#     output: true
+
 sass:
   sass_dir:          _sass
   style:            :compressed
 
 author:
   name:              Alex
-  url:               https://twitter.com/lxmrc
   email:             alex@lxmrc.com
 
 markdown: kramdown

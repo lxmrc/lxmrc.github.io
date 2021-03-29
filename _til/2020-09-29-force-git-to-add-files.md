@@ -1,10 +1,9 @@
 ---
 layout: post
 title: Force git to add files
-tags:
-- til
-- git
+date: 2020-09-29 13:18 +1000
 ---
+
 For some reason git wasn't noticing changes I'd made.
 
 `git add -f path/to/the/file` will forcefully add the files for commit.

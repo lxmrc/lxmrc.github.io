@@ -4,21 +4,18 @@ title: Today I Learned
 permalink: /til
 ---
 
-## Today I Learned notes
+## TIL
 
-Don't you just love researching how to solve a problem and then running into it again 3 weeks later and researching it all over again?
-
-This is where I write down stuff I learn in case I need it later. Inspired by [Hashrocket’s TIL](https://til.hashrocket.com).
+Short for "today I learned". This is where I write stuff down for when I forget it later.
 
 ---
 
 <ul class="posts til">
-  {% for post in site.posts %}
-    {% if post.tags contains "til" %}
+  {% assign posts = site.til | reverse %}
+  {% for post in posts %}
       <li>
         <a class="post" href="{{ post.url }}">{{ post.title }}</a>
         <time class="archive-date">{{ post.date | date: site.date_format }}</time>
       </li>
-    {% endif %}
   {% endfor %}
 </ul>

@@ -1,15 +1,14 @@
 ---
 layout: post
-title: Self-Hosting Everything
+title: Self-hosting Everything
 description: In which I make deploying a Rails app more complicated on purpose.
 date: 2020-11-26 11:04 +1100
 ---
-
 I recently finished reading [Active Rails by Ryan Bigg](https://activerails.com). The final chapter covers setting up continuous integration with GitHub Actions and deploying the application to Heroku, but having deployed a couple of Rails apps to Heroku before I decided this time around to try deploying to my own server with Capistrano.
 
-Before long I was also setting up a self-hosted S3 bucket with [MinIO](https://min.io), running CI pipelines on my own server with [GitLab Runner](https://docs.gitlab.com/runner) and writing a Dockerfile to optimise the process. Why? I thought it would be interesting and that I would learn a lot. (I was right.)
+Before long I was also setting up a self-hosted S3 bucket with MinIO, running CI pipelines on my own server with GitLab and writing a Dockerfile to optimise the process. Why? I thought it would be interesting and that I would learn a lot.
 
-I'm not sure if this would be useful to anyone else but in the interest of [creating "learning exhaust"](https://www.swyx.io/learn-in-public), here is how I did all of that. This isn't exactly a step-by-step guide, more of a personal retrospective for my own benefit; if you do want to try it yourself there is a list of all the resources I used at the end of this article.
+I'm not sure if this would be useful to anyone else but in the interest of [creating "learning exhaust"](https://www.swyx.io/learn-in-public), here is how I did all of that. This isn't exactly a step-by-step guide, more of a personal retrospective for my own benefit; if you do want to try any of this yourself there is a list of all the resources I used at the end of this article.
 
 1. [Deploying with Capistrano](#deploying-with-capistrano)
 1. [Self-hosted object storage with MinIO](#self-hosted-object-storage-with-minio)
@@ -25,11 +24,9 @@ For the initial setup I followed [the GoRails guide on deploying a Rails app to 
 
 ### What's an application server?
 
-The first unfamiliar thing in this process for me was [Phusion Passenger](https://phusionpassenger.com) and the concept of an 'application server'. The guide walks you through setting up Nginx and Passenger and this made me wonder, if we're already installing a web server, what does this second kind of 'server' do and why is it necessary?
+The first unfamiliar thing in this process for me was [Phusion Passenger](https://phusionpassenger.com) and the concept of an 'application server'. The guide goes through setting up Nginx and Passenger and that made me wonder, if I'm already installing a web server, what does this second kind of 'server' do and why is it necessary?
 
-This was new to me because I'd only ever run Rails apps either on my own machine with `rails server` or by deploying to Heroku. I was vaguely aware that running `rails server` involves another application server called [Puma](https://puma.io/) but I never had to install Nginx or Apache alongside it.
-
-[The Passenger docs do a good job of answering that question](https://www.phusionpassenger.com/docs/tutorials/fundamental_concepts/ruby/#how-passenger-fits-in-the-stack):
+[The Passenger docs do a good job of answering the question](https://www.phusionpassenger.com/docs/tutorials/fundamental_concepts/ruby/#how-passenger-fits-in-the-stack):
 
 >Nginx and Apache are web servers. They provide HTTP transaction handling and serve static files. *However, they are not Ruby application servers and cannot run Ruby applications directly.* That is why Nginx and Apache are used in combination with an application server, such as Passenger.
 >
@@ -45,7 +42,7 @@ I also ran into some trouble when it came to Rails credentials and storing them 
 
 The app I built reading Active Rails also uses Active Storage. The credentials needed to access my S3 bucket are stored in the encrypted file `config/credentials.yml.enc` and the key for decrypting that file is in `config/master.key`, which for obvious reasons should never be checked into version control. [The right way of getting this key onto a production server is to save it as an environment variable](https://12factor.net/config), and the GoRails guide covers using `rbenv-vars` to achieve this.
 
-That doesn't seem so complicated now that I've typed it out but as Jason Swett mentions the official Rails docs aren't a very good intro to the subject.
+That doesn't seem so complicated now that I've typed it out but as Jason Swett says in his blog post it's weirdly hard to grasp the subject initially and the official Rails docs aren't a very good intro.
 
 Apart from those two things I was basically able to follow the steps without any trouble and had my app deployed and running on my own server. The next step was to get file uploads working correctly.
 
@@ -58,11 +55,11 @@ Last year I signed up for the AWS free tier and then proceeded to do very little
 <img src="/assets/aws.jpeg" width="75%" style="margin: 1em auto;"/>
 <div	 class="caption">via <a href="https://twitter.com/SimpsonsOps">Simpsons Against DevOps</a></div>
 
-At this point I was addicted to making everything more complicated than it needed to be, so I wondered, what was the category of thing that Amazon S3 falls into and could I host my own version of it? The answer is object storage and yes.
+At this point I was in the mood to make everything more complicated than it needed to be, so I asked myself, what is the category of thing that Amazon S3 falls into and can I host my own version of it? The answer is object storage and yes. (I later found out that S3 buckets are pretty cheap but that wouldn't have stopped me.)
 
-[This video by Zach Gollwitzer explains what object storage is and what differentiates it from the more traditional types of storage.](https://www.youtube.com/watch?v=3r9RGJ0_Bls&t=1468s) It's good for storing unstructured data that will most likely be written to once but accessed many times, e.g.: images and video. S3 is Amazon's object storage service, but other cloud providers offer compatible services based on the S3 API, and it's also possible to host your own, which is what I did using [MinIO](https://min.io).
+[This video by Zach Gollwitzer explains what object storage is and what differentiates it from the more traditional types of storage.](https://www.youtube.com/watch?v=3r9RGJ0_Bls&t=1468s) It's well-suited for storing unstructured data that will most likely be written to once but accessed many times, e.g.: images and video. S3 is Amazon's object storage service, but other cloud providers offer compatible services based on the S3 API, and it's also possible to host your own, which is what I did using [MinIO](https://min.io).
 
-It was actually pretty simple, I used [this guide by Kevin Stevenson](https://gist.github.com/kstevenson722/e7978a75aec25feaa6ad0965ec313e2d) and was up and running within a few minutes. Configuring Active Storage to work with my MinIO bucket was also pretty straightforward thanks to [this post by Kevin Jalbert](https://kevinjalbert.com/rails-activestorage-configuration-for-minio/). It turns out everything is easy when someone else already wrote down how to do it.
+It was surprisingly simple, I just followed [this guide by Kevin Stevenson](https://gist.github.com/kstevenson722/e7978a75aec25feaa6ad0965ec313e2d) and was up and running within a few minutes. Configuring Active Storage to work with my MinIO bucket was also pretty straightforward thanks to [this post by Kevin Jalbert](https://kevinjalbert.com/rails-activestorage-configuration-for-minio/). It turns out everything is easy when someone else already wrote down how to do it.
 
 The Rails app was now fully functional, able to handle file uploads and store them on my imitation S3 bucket. The next thing I wanted to tackle was continuous integration.
 
@@ -70,12 +67,13 @@ The Rails app was now fully functional, able to handle file uploads and store th
 
 ## Self-hosting a GitLab instance and CI runner
 
+
 ![](/assets/rube-goldberg.png)
 <div	 class="caption">Real diagram of a CI pipeline.</div>
 
 I won't go over continuous integration and delivery (CI/CD) in detail here. [Here's a short video on the idea if you're unfamiliar.](https://www.youtube.com/watch?v=scEDHsr3APg) 
 
-Essentially what I wanted was to automate the process of running the test suite and deploying to production after every commit. [GitHub Actions](https://github.com/features/actions) is an easy way to do this but as you might've gathered from reading this far, I prefer it when things are hard, so I decided to try running CI on my own server with GitLab.
+Essentially what I wanted was to automate the process of running the test suite and deploying to production after every commit. [GitHub Actions](https://github.com/features/actions) is an easy way to do this but as I already mentioned, I wanted to make everything hard, so I decided to try running CI on my own server with GitLab.
 
 Setting up a GitLab instance was pretty painless: [you can just install it as a package on Ubuntu.](https://about.gitlab.com/install/#ubuntu) This will create a self-hosted, self-managed instance of GitLab. [To run CI pipelines you need a GitLab Runner](https://docs.gitlab.com/runner/), which has to run on its own separate server. I went with Docker for my "executor", the thing the runner uses to run stuff; there are other options but I like Docker.
 
@@ -84,7 +82,7 @@ Setting up a GitLab instance was pretty painless: [you can just install it as a 
 
 Once Docker's installed you can [install GitLab Runner](https://docs.gitlab.com/runner/install/linux-repository.html#installing-the-runner) and [register it](https://docs.gitlab.com/runner/register/index.html), i.e. bind it to your GitLab instance so it can run your pipelines on it. 
 
-I really don't have much else to say about this part; I just followed GitLab's docs and pretty soon I was ready to start continuously integrating and deploying.
+I don't really have much else to say about this part; I just followed GitLab's docs and pretty soon I was ready to start continuously integrating and deploying.
 
 ---
 
@@ -115,13 +113,13 @@ image: ruby:2.7.1
 test:
   stage: test
   script:
-    # Install Node and Yarn
+    # Install Node and Yarn.
     - curl -sL https://deb.nodesource.com/setup_12.x | bash -
     - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
     - apt-get update
     - apt-get install nodejs yarn
-    # Install headless Firefox
+	# Install Firefox and geckodriver.
     - apt-get -y install firefox-esr
     - wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
     - tar -xvzf geckodriver-v0.27.0-linux64.tar.gz -C /usr/bin
@@ -169,7 +167,7 @@ image: "gitlab.lxmrc.com/lxmrc/ticketty"
 test:
   stage: test
   variables:
-    RAILS_ENV: "test" # Prevents `yarn check --integrity`
+    RAILS_ENV: "test"
   script:
     - bundle exec rake assets:precompile
     - bundle exec rake db:create
@@ -180,10 +178,12 @@ And reduced the build time from 8:21 to 1:50. I now had automated tests running,
 
 To deploy manually I just run `bundle exec cap production deploy`, but deploying from inside the GitLab Runner container takes a little more than that. 
 
-The production server doesn't let just anyone deploy to it, it uses SSH for authentication. I needed to somehow get an SSH key into the container that Capistrano would be running in. [I used this blog post by Jamie Tanna to figure this out](https://www.jvt.me/posts/2017/01/25/gitlab-ci-capistrano/), but here are the steps summarized:
+The production server doesn't let just anyone deploy to it, it uses SSH for authentication, so I needed to somehow get an SSH key into the container that Capistrano would be running in. Figuring this out in the first place probably took the longest out of any other step in the process but [I eventually found this blog post by Jamie Tanna explaining the right way of doing this](https://www.jvt.me/posts/2017/01/25/gitlab-ci-capistrano/).
 
-1. You can make environment variables available in the container from the GitLab UI: [add the private key as an environment variable called `$SSH_PRIVATE_KEY`](https://docs.gitlab.com/ee/ci/variables/README.html#create-a-custom-variable-in-the-ui) and it'll become accessible from your `.gitlab-ci.yml`.
-2. [Add the public key as a 'deploy key' from the GitLab UI.](https://docs.gitlab.com/ee/user/project/deploy_keys/#project-deploy-keys) This will allow Capistrano, running inside GitLab Runner, to read from the repo so it can then deploy.
+Here are the basic steps summarized:
+
+1. You can make environment variables available in the container from the GitLab UI: [add the *private key* as an environment variable called `$SSH_PRIVATE_KEY`](https://docs.gitlab.com/ee/ci/variables/README.html#create-a-custom-variable-in-the-ui) and it'll become accessible from your `.gitlab-ci.yml`.
+2. [Add the *public key* as a 'deploy key' from the GitLab UI.](https://docs.gitlab.com/ee/user/project/deploy_keys/#project-deploy-keys) This will allow Capistrano, running inside GitLab Runner, to read from the repo so it can then deploy.
 3. Use `ssh-agent` in the `.gitlab-ci.yml` to authenticate.
 
 Here's what that looks like:
@@ -197,19 +197,17 @@ deploy:
     - bundle exec cap production deploy 
 ```
 
-That's it! Everything finally worked. This last part took the most time by far because I wasn't just following along with someone else's instructions, but it was also the part where I learned the most.
+That's it! Everything finally worked. It was overkill for a toy application but it worked.
 
 ---
 
 ## Final thoughts
 
-Obviously I've skipped over a lot of troubleshooting and missteps and the hours spent on StackOverflow it took to get everything working. Overall this whole process took me around 12-16 hours over several days, and it was getting past two or three specific errors that took up the bulk of that time.
+I've skipped over a lot of troubleshooting and missteps and the hours spent on StackOverflow it took to get everything working. Overall this whole process took me around 12-16 hours over several days, and it was getting past two or three specific errors that took up the bulk of that time. Maybe I should have written about them but I'd forgotten what they were by the time I decided to write this.
 
-An important realisation I had is that this would have taken much longer, or I might not have been able to do it at all, if it weren't for other people's blog posts.
+This would have taken much longer, or I might not have been able to do it at all, if it weren't for other people's blog posts, so thank you bloggers.
 
-Next time I do something like this I think I'll also try writing some Ansible playbooks to automate everything while I'm at it.
-
-Since writing this post I've torn down the GitLab and MinIO servers (because servers cost money) but [the app is still available](https://ticketty.lxmrc.com), albeit without file upload functionality.
+Since writing this post I've torn down the GitLab and MinIO servers (because money) but [the app is still available](https://ticketty.lxmrc.com), albeit without file upload functionality.
 
 Here are all the important links I used again in one spot if you want to do any of this yourself:
 
