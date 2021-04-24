@@ -8,7 +8,7 @@ date: 2020-09-29 13:19 +1000
 
 [Implementing Ruby's Tap Method \| Leigh Halliday](https://www.leighhalliday.com/implementing-rubys-tap-method)
 
-This came in handy for the Luhn exercise on [exercism.io](https://exercism.io):
+I saw this for the first time in [this awesome solution to the Luhn exercise on exercism.io](https://exercism.io/tracks/ruby/exercises/luhn/solutions/8d2791d779774fd4b0e1a9529cf895af):
 
 ```ruby
 class Luhn

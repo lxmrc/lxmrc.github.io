@@ -10,10 +10,11 @@ include: ['_pages']
 
 pages_list:
   about: '/about.html'
+  TIL: '/til.html'
 
-# collections:
-#   til:
-#     output: true
+collections:
+  til:
+    output: true
 
 sass:
   sass_dir:          _sass
