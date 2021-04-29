@@ -1,10 +1,8 @@
 ---
 layout: post
 title: DIY GitHub Pages
-date: 2021-04-26 19:24 +1000
 description: How I host this site.
 ---
-
 Most people just use GitHub Pages to host their Jekyll site, but not me. I love to pay for things I can get for free. 
 
 I used [Git hooks](https://githooks.com/) to replicate the automated deployment functionality of GitHub Pages so I can push to a repo and have my site build and deploy automatically.
