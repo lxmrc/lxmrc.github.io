@@ -60,7 +60,7 @@ I was vaguely aware of that if you want to snatch files or directories from the 
 
 Luckily there is an official [upload-artifact GitHub Action](https://github.com/actions/upload-artifact) for doing exactly this. Here's what I added to my `.github/workflows/tests.yml` file:
 
-```YAML
+```
     - name: Upload Capybara snapshots
       uses: actions/upload-artifact@v2
       if: failure()
