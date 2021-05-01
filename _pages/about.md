@@ -18,5 +18,5 @@ I'm interested in :
 
 [GitHub](https://github.com/lxmrc) &middot;
 [Twitter](https://twitter.com/lxmrc) &middot;
-[Contact](mailto:alex@lxmrc.com) 
+<a href="mailto: {{ 'alex@lxmrc.com' | encode_email }}">Contact</a>
 {: style="text-align: center;"}

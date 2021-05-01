@@ -8,6 +8,5 @@ group :jekyll_plugins do
    gem 'jekyll-compose'
    gem 'jekyll-spaceship'
    gem 'jekyll-feed'
+   gem 'jekyll-email-protect'
 end
-
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
