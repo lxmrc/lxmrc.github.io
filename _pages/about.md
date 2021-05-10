@@ -11,8 +11,10 @@ I’m Alex. I’m a Ruby developer based in Melbourne, Australia. This is where 
 I'm interested in :
   - Ruby, either on Rails or regular
   - Back-end development in particular
-  - Linux, Docker, CI/CD and devops in general
+  - Linux, Docker, CI/CD, devops, etc.
   - Why learning is hard and how to do it better
+
+Lately I am especially interested in learning idioms, design patterns, code smells and refactoring.
 
 ---
 
