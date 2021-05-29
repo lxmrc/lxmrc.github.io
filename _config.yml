@@ -11,6 +11,7 @@ include: ['_pages']
 pages_list:
   about: '/about.html'
   TIL: '/til.html'
+  links: '/links.html'
 
 collections:
   til:
