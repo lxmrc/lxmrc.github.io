@@ -2,7 +2,7 @@
 layout: post
 title: Self-hosting Everything
 description: In which I make deploying a Rails app more complicated on purpose
-date: 2020-10-10 12:39 +1000
+date: 2020-12-17 12:39 +1000
 ---
 I recently finished reading [Active Rails by Ryan Bigg](https://activerails.com). The final chapter covers setting up continuous integration with GitHub Actions and deploying the application to Heroku, but having deployed a couple of Rails apps to Heroku before I decided this time around to try deploying to my own server with Capistrano.
 

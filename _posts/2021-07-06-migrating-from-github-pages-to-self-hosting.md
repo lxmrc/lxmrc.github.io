@@ -2,7 +2,7 @@
 layout: post
 title: Migrating from GitHub Pages to self-hosting
 description: Automating static site deployments with Git hooks
-date: 2020-07-06 11:30 +1000
+date: 2020-11-10 11:30 +1000
 ---
 
 >**Update:** As of 2021 this site is hosted on [Vercel](https://vercel.com) because servers cost money, but I'm leaving this article up for posterity.

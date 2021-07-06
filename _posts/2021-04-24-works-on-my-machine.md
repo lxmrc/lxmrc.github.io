@@ -7,7 +7,7 @@ date: 2021-04-24 14:25 +1000
 
 Recently my GitHub Actions pipeline was failing because of a test:
 
-```
+```text
 1) Users can delete comments if the post belongs to them
   Failure/Error: find("#delete-#{comment.id}").click
 
