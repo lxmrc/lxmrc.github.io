@@ -21,7 +21,7 @@ And you will probably also want your own [domain name](https://www.namecheap.com
 
 ## Serving the site via Nginx
 
-Clone a copy of your Jekyll site from the GitHub repository onto your server (`cd` into `/home/your-username` if you're not there already):
+Clone a copy of your Jekyll site from the GitHub repository to the home directory on your server:
 
 ```shell
 git clone https://github.com/your-username/your-username.github.io.git
@@ -108,13 +108,7 @@ Make some changes on your local machine, commit and push:
 git push jekyll
 ```
 
-And your site should update instantly! Pretty cool I reckon.
-
-## Next steps
-
-This would all be much more impressive if you didn't have to use the IP address to visit your site. Why not [buy a domain](https://www.namecheap.com/) and [set up your DNS records](https://www.namecheap.com/support/knowledgebase/article.aspx/9837/46/how-to-connect-a-domain-to-a-server-or-hosting#viaip)?
-
-You should probably also take further steps to secure your server [by disabling root login, using SSH keys to log in instead of a password](https://youtu.be/5JvU9wcZSbA&t=296) and [setting up a firewall](https://www.youtube.com/watch?v=Pn_1rb4oF5I).
+And your site should update instantly.
 
 ---
 
