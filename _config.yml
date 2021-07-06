@@ -11,23 +11,27 @@ include: ['_pages']
 pages_list:
   about: '/about.html'
   TIL: '/til.html'
-  links: '/links.html'
 
 collections:
   til:
     output: true
+  tesserae:
+    output: true
+
 
 sass:
   sass_dir:          _sass
   style:            :compressed
 
 author:
-  name:              Alex
+  name:              Alex Mercea
   email:             alex@lxmrc.com
 
 markdown: kramdown
 kramdown:
   input: GFM
+
+highlighter: none
 
 plugins:
   - jekyll-feed
