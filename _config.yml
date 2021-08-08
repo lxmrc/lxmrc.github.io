@@ -11,13 +11,13 @@ include: ['_pages']
 pages_list:
   about: '/about.html'
   TIL: '/til.html'
+  bookmarks: '/bookmarks.html'
 
 collections:
   til:
     output: true
   tesserae:
     output: true
-
 
 sass:
   sass_dir:          _sass
