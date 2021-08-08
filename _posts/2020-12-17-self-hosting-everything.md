@@ -42,8 +42,6 @@ I also ran into some trouble when it came to Rails credentials and storing them 
 
 The credentials needed to access my S3 bucket are stored in the encrypted file `config/credentials.yml.enc` and the key for decrypting that file is in `config/master.key`, which should never be checked into version control. [The right way of getting this key onto a production server is to save it as an environment variable](https://12factor.net/config), which the GoRails guide uses `rbenv-vars` to achieve.
 
-That doesn't seem so complicated now that I've typed it out but as Jason Swett says in his blog post it's weirdly hard to grasp the subject initially and the official Rails docs aren't a very good intro.
-
 Apart from those two things I was basically able to follow the steps without any trouble and had my app deployed and running on my own server. The next step was to get file uploads working correctly.
 
 ---	
