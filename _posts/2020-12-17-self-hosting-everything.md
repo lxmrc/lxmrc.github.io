@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Self-hosting Everything
+title: Self-Hosting Everything
 description: In which I make deploying a Rails app more complicated on purpose
 date: 2020-12-17 12:39 +1000
 ---

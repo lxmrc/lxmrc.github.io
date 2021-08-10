@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Migrating from GitHub Pages to self-hosting
+title: Migrating from GitHub Pages to Self-Hosting
 description: Automating static site deployments with Git hooks
 date: 2020-11-10 11:30 +1000
 ---
