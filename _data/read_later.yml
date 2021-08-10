@@ -6,3 +6,5 @@
   url: https://blog.clarisights.com/monitoring-and-reporting-errors-from-sidekiq-jobs
 - title: How Sidekiq works
   url: https://longliveruby.com/articles/how-sidekiq-really-works?utm_source=pocket_mylist
+- title: Sidekiq and Background Jobs for Beginners - intermediate_ruby
+  url: https://www.intermediateruby.com/sidekiq-and-background-jobs-in-rails-for-beginners
