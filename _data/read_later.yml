@@ -2,3 +2,5 @@
   url: https://www.apollographql.com/blog/graphql/basics/the-concepts-of-graphql/?utm_source=pocket_mylist
 - title: An Introduction to Functional Reactive Programming
   url: https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/?utm_source=pocket_mylist
+- title: Monitoring and Reporting Errors from Sidekiq Jobs | Clarisights Journal
+  url: https://blog.clarisights.com/monitoring-and-reporting-errors-from-sidekiq-jobs
