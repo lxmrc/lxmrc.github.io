@@ -12,6 +12,7 @@ Set the fold method to manual:
 - `zo` to open a fold.
 - `zc` to close a fold.
 - `za` to toggle.
+- `zd` to delete a fold.
 - `zM` close all folds.
 - `zR` open all folds.
 - `zE` to delete all folds.
