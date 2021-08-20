@@ -30,3 +30,5 @@
   url: https://hackernoon.com/using-custom-slugs-for-rails-urls-500eb3f58f3c
 - title: "Vim Folding | Vim From Scratch"
   url: https://www.vimfromscratch.com/articles/vim-folding/
+- title: "Debugging Action Callbacks (aka Filters) in Rails | Hashrocket"
+  url: https://hashrocket.com/blog/posts/debugging-action-callbacks-aka-filters-in-rails
