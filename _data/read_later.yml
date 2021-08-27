@@ -34,3 +34,5 @@
   url: https://hashrocket.com/blog/posts/debugging-action-callbacks-aka-filters-in-rails
 - title: "Modern web apps without JavaScript bundling or transpiling"
   url: https://world.hey.com/dhh/modern-web-apps-without-javascript-bundling-or-transpiling-a20f2755
+- title: "Extracting specific keys from a hash in Ruby"
+  url: https://zaiste.net/posts/extracting-keys-from-hash-ruby/
