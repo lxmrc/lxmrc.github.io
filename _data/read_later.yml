@@ -36,3 +36,5 @@
   url: https://world.hey.com/dhh/modern-web-apps-without-javascript-bundling-or-transpiling-a20f2755
 - title: "Extracting specific keys from a hash in Ruby"
   url: https://zaiste.net/posts/extracting-keys-from-hash-ruby/
+- title: "Rails SQL Injection Guide: Examples andPrevention"
+  url: https://www.stackhawk.com/blog/sql-injection-prevention-rails/
