@@ -30,3 +30,5 @@
   url: https://rogerdudler.github.io/git-guide/
 - title: "Upgrading PostgreSQL Version on Ubuntu Server | GoRails"
   url: https://gorails.com/guides/upgrading-postgresql-version-on-ubuntu-server
+- title: "Fullstack GraphQL"
+  url: https://www.graphql.college/fullstack-graphql
