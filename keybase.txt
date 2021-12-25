@@ -1,0 +1,68 @@
+==================================================================
+https://keybase.io/lxmrc
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://lxmrc.com
+  * I am lxmrc (https://keybase.io/lxmrc) on keybase.
+  * I have a public key with fingerprint 04CA 6A60 D752 3557 3E6D  E211 296D 8633 A2AB C9D3
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0101dd2abc10e3708a65143da2e991845e57b79b1961aca7b47c8e99138a185b217c0a",
+      "fingerprint": "04ca6a60d75235573e6de211296d8633a2abc9d3",
+      "host": "keybase.io",
+      "key_id": "296d8633a2abc9d3",
+      "kid": "0101dd2abc10e3708a65143da2e991845e57b79b1961aca7b47c8e99138a185b217c0a",
+      "uid": "b5febf64fdb1b68016e45c487be44e19",
+      "username": "lxmrc"
+    },
+    "service": {
+      "hostname": "lxmrc.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1640410061,
+  "expire_in": 157680000,
+  "prev": "448d28a436641ca92d2ad0810eb5a9ed3c7219357ac6d97c40edb2edfe54d2c5",
+  "seqno": 2,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.13
+Comment: https://keybase.io/crypto
+
+yMIkAnicrVJdSBRRFF6tDRMSMaOQNJrMhNTmztz5W6SELaOk8kEhQlzvzL2rg7qz
+O7trymZUpJhpIpWYJUZJBlo99GKYmj9JEkFZYigJpfUQWWrgS5jdkYIeeuy+XO45
+3/ed75x7hjessUWGvd+2ZPYmBhvCng80Bm1opPNFiFENXME4QkwxWb1ICSb+gKtY
+x4yDYQELMOaQqgGW8BIrI1EAkMeII4oCZCgQQVIlRQWKCJCGJBVKmmyleBkBWVA5
+IGksYlIYt+4pJKbX1D0BSxZqSEQiiyWB4wVB4omICQcAp4hYFnkeWRUVzFNikeG3
+GNScivwkTTdojD5cq/b+gf/PvoOrcqrgJqpbhG6sAlWUWSASKGhQllQCIQGKBfQT
+04NKCUWXlJeaGlOZwtBQma4Ra6pWG3+n0zSjlLK8phEwNKOEhosCAa/fYdECFV4L
+d5Kort8KLlX3YDpByigjpl83PIwDUKQW0C1JIEIWApYVQQpDyr26SVy6hRAk6pUe
+qw4po5IQypiTEeRFEQINKRwdEWZlOiNVQArBvCZxQOEFCWkiViQNsgSrHMFuIkDM
+aQJj9eTzGIyDozZRIZX064UeFAiahKkcfJK31hYWaVtnD7c2yxa5PvrPvoV6Imzn
+J8cv+cpzk4c73oSc+3qScnqbm097YysLj8NMfmx6+fN8jXwm/dO3sOz0tvmc+oW+
+Q0OjBfWjJ47tvke/ODvI9w1ejQ/FlHZFT2ZNVVc9uFWxdHb6ckb5RFR/05XU2ITO
+rO2Le3zOYG1DRPKXlgO3L9jvzH642XU0frNcN3T46cqzsdm2/VEvQ7OnbmT0nyuw
+fy9acS60Vqdl53m2HExKjUhYDPdNTE3mb12pe7TJ1z337mLk171T99lXbzfG7nIO
+5Han5V6L6bVF1S834Jma/rvzc+1xI8mvh340Xt8RPr6zzf6xSTJz5h+fyh8Kz4xr
+aY3qrKqdOdL+MDfxZ120raHjF+/rQSY=
+=+tIT
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/lxmrc
+
+==================================================================
